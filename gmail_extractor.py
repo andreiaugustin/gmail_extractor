@@ -55,7 +55,17 @@ class GMAIL_EXTRACTOR():
         for anEmail in self.data[0].split():
             type, self.data = self.mail.fetch(anEmail, '(UID RFC822)')
             raw = self.data[0][1]
-            raw_str = raw.decode("utf-8")
+            try:
+                raw_str = raw.decode("utf-8")
+            except UnicodeDecodeError:
+                try:
+                    raw_str = raw.decode("ISO-8859-1") # ANSI support
+                except UnicodeDecodeError:
+                    try:
+                        raw_str = raw.decode("ascii") # ASCII ?
+                    except UnicodeDecodeError:
+                        pass
+						
             msg = email.message_from_string(raw_str)
 
             jsonOutput['subject'] = msg['subject']
