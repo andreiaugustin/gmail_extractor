@@ -91,7 +91,7 @@ class GMAIL_EXTRACTOR():
                             with open(attchFilePath, "wb") as f:
                                 f.write(part.get_payload(decode=True))
             else:
-                jsonOutput['body'] = msg.get_payload(decode=True) # Non-multipart email, perhaps no attachments or just text.
+                jsonOutput['body'] = msg.get_payload(decode=True).decode("utf-8") # Non-multipart email, perhaps no attachments or just text.
 
             outputDump = json.dumps(jsonOutput)
             emailInfoFilePath = str(self.destFolder)+str(uid)+str("/")+str(uid)+str(".json")
